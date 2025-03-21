@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Math & Hacking App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: #1a1a2e;
+            color: #00ffcc;
+            padding: 20px;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background: #16213e;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px #00ffcc;
+        }
+        button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 18px;
+            background: #00ffcc;
+            color: #16213e;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #00bfa6;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            font-size: 18px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="menu" class="container">
+        <h1>Cyber Math & Hacking App</h1>
+        <p>Select a category:</p>
+        <button onclick="selectMathCategory()">Math</button>
+        <button onclick="startGame('binary')">Cyber - Binary Conversion</button>
+        <button onclick="startGame('hex')">Cyber - Hexadecimal Conversion</button>
+        <button onclick="startGame('pc_parts')">PC - Identify PC Parts</button>
+        <button onclick="startGame('coding')">Coding - Solve Code Snippet</button>
+        <button onclick="startGame('hacking')">Hacking - Ethical Hacking Questions</button>
+    </div>
+    
+    <div id="math-menu" class="container" style="display: none;">
+        <h2>Select a Math Category</h2>
+        <button onclick="startGame('addition')">Addition</button>
+        <button onclick="startGame('subtraction')">Subtraction</button>
+        <button onclick="startGame('multiplication')">Multiplication</button>
+        <button onclick="startGame('division')">Division</button>
+        <button onclick="goBackToMain()">Back</button>
+    </div>
+    
+    <div id="game" class="container" style="display: none;">
+        <h2 id="question"></h2>
+        <input type="text" id="answer" placeholder="Your answer">
+        <button onclick="checkAnswer()">Submit</button>
+        <p id="feedback"></p>
+        <button onclick="endGame()">Finish</button>
+    </div>
+    
+    <div id="score" class="container" style="display: none;">
+        <h2>Game Over</h2>
+        <p id="scoreText"></p>
+        <button onclick="goBackToMain()">Back to Menu</button>
+    </div>
+    
+    <script>
+        let question, correctAnswer, operation, score = 0, totalQuestions = 0;
+        
+        function selectMathCategory() {
+            document.getElementById("menu").style.display = "none";
+            document.getElementById("math-menu").style.display = "block";
+        }
+        
+        function goBackToMain() {
+            document.getElementById("math-menu").style.display = "none";
+            document.getElementById("menu").style.display = "block";
+        }
+        
+        function startGame(op) {
+            operation = op;
+            score = 0;
+            totalQuestions = 0;
+            document.getElementById("menu").style.display = "none";
+            document.getElementById("math-menu").style.display = "none";
+            document.getElementById("game").style.display = "block";
+            generateQuestion();
+        }
+        
+        function generateQuestion() {
+            totalQuestions++;
+            let num1 = Math.floor(Math.random() * 10) + 1;
+            let num2 = Math.floor(Math.random() * 10) + 1;
+            
+            switch(operation) {
+                case 'addition':
+                    correctAnswer = num1 + num2;
+                    question = `${num1} + ${num2} = ?`;
+                    break;
+                case 'subtraction':
+                    correctAnswer = num1 - num2;
+                    question = `${num1} - ${num2} = ?`;
+                    break;
+                case 'multiplication':
+                    correctAnswer = num1 * num2;
+                    question = `${num1} × ${num2} = ?`;
+                    break;
+                case 'division':
+                    correctAnswer = (num1 / num2).toFixed(2);
+                    question = `${num1} ÷ ${num2} = ?`;
+                    break;
+            }
+            document.getElementById("question").innerText = question;
+            document.getElementById("answer").value = "";
+        }
+        
+        function checkAnswer() {
+            let userAnswer = document.getElementById("answer").value.trim();
+            if (userAnswer.toLowerCase() === correctAnswer.toString().toLowerCase()) {
+                score++;
+            }
+            document.getElementById("feedback").innerText = `Score: ${score}/${totalQuestions}`;
+            generateQuestion();
+        }
+        
+        function endGame() {
+            document.getElementById("game").style.display = "none";
+            document.getElementById("score").style.display = "block";
+            document.getElementById("scoreText").innerText = `Final Score: ${score}/${totalQuestions}`;
+        }
+    </script>
+</body>
+</html>
